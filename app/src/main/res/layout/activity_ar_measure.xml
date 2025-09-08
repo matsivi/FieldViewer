@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ARMeasureActivity">
+
+    <!-- AR Fragment (use legacy <fragment> tag for Sceneform UX) -->
+    <fragment
+        android:id="@+id/ar_fragment_container"
+        android:name="com.google.ar.sceneform.ux.ArFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:keepScreenOn="true" />
+
+    <!-- Center Crosshair -->
+    <TextView
+        android:id="@+id/crosshair"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_gravity="center"
+        android:text="+"
+        android:textSize="32sp"
+        android:textColor="@android:color/white"
+        android:gravity="center"
+        android:background="@android:color/transparent"
+        android:alpha="0.7"
+        android:clickable="false"
+        android:focusable="false" />
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#80000000"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:clickable="false"
+        android:focusable="false">
+
+        <TextView
+            android:id="@+id/tvPoints"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Points: 0"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvArea"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Area: 0 m²"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvPerimeter"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Perimeter: 0 m"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+    </LinearLayout>
+
+    <!-- Bottom Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:background="#80000000"
+        android:padding="16dp"
+        android:gravity="center_vertical"
+        android:clickable="false"
+        android:focusable="false">
+
+        <Button
+            android:id="@+id/btnAdd"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="+ Point" />
+
+        <Button
+            android:id="@+id/btnUndo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:text="Undo" />
+
+        <Button
+            android:id="@+id/btnFinish"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Finish"
+            android:enabled="false" />
+
+    </LinearLayout>
+
+</FrameLayout>

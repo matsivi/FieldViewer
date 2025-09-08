@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingBottom="24dp"
+        android:paddingTop="72dp">
+
+        <TextView
+            android:id="@+id/tvAreaFinal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Area: 0.00 m²"
+            android:textSize="22sp"
+            android:paddingBottom="12dp" />
+
+        <TextView
+            android:id="@+id/tvPerimeterFinal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Acres: 0.00 ac"
+            android:textSize="22sp"
+            android:paddingBottom="24dp" />
+
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="240dp" />
+
+        <EditText
+            android:id="@+id/etFileName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Filename (optional)"
+            android:singleLine="true"
+            android:inputType="textNoSuggestions" />
+
+        <Button
+            android:id="@+id/btnOpenInMaps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="View in Maps" />
+
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Share" />
+
+        <Button
+            android:id="@+id/btnSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Save" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:id="@+id/btnFlipEW"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Flip E/W" />
+
+            <Button
+                android:id="@+id/btnFlipNS"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Flip N/S" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btnSavedSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8dp"
+            android:text="Saved"
+            android:textSize="12sp"
+            android:minHeight="36dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnNew"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:text="+"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:contentDescription="New Measurement"
+        android:minWidth="0dp"
+        android:minHeight="0dp"
+        android:padding="0dp"
+        android:backgroundTint="#00BCD4"
+        android:layout_gravity="end|top"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp" />
+
+</FrameLayout>
