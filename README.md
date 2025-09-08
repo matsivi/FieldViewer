@@ -78,7 +78,7 @@ app/
 - **Inconvertible types / `ArFragment` errors**: Use `com.google.ar.sceneform.ux.ArFragment` and align `sceneform-ux` dependency with imports and your layout `<fragment>` tag. Clean/rebuild if classpath changed.
 
 ### Roadmap / TODO
-- Export measurements (GeoJSON/KML)
+- Export measurements (GeoJSON/KML) - Done
 - Cloud save/sync
 - Multi‑polygon sessions
 - In‑app accuracy tips and calibration
