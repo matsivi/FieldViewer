@@ -64,7 +64,7 @@ public class ARMeasureActivity extends AppCompatActivity {
     private final List<Object> points = new ArrayList<>();
     private boolean arCoreReady = false;  // Flag to ensure ARCore is properly initialized
     private boolean userRequestedInstall = true; // Only true first time, prevents repeated install prompts
-    // Removed tap debounce; allow rapid +Point adds
+   
 
     // Location and orientation tracking for map georeferencing
     private FusedLocationProviderClient fusedLocationClient;  // High-accuracy GPS provider
@@ -73,11 +73,11 @@ public class ARMeasureActivity extends AppCompatActivity {
     private Sensor rotationVectorSensor;
     private final float[] rotationMatrix = new float[9];  // Device orientation matrix
     private final float[] orientation = new float[3];  // Roll, pitch, yaw angles
-    private float lastAzimuthRad = 0f; // Device heading (magnetic north) in radians
+    private float lastAzimuthRad = 0f; // Device heading
     private Float headingAtFirstAnchorRad = null; // Captured when first anchor placed for map alignment
     private boolean resultStarted = false;  // Prevents multiple result launches
     private boolean shouldResetAfterResult = false;  // Flag to reset state after returning from results
-    private boolean autoAddFirstPoint = false; // Disabled per request; user starts manually after warmup
+    private boolean autoAddFirstPoint = false; // Disabled. User starts manually after warmup
     private boolean attemptedAutoFirstAdd = false;
     private android.os.CountDownTimer warmupTimer;
 
@@ -115,8 +115,7 @@ public class ARMeasureActivity extends AppCompatActivity {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         // Warm up origin location early so Maps placement is ready even if user proceeds quickly
         tryCaptureOriginLocation();
-
-        // Optionally auto-add the first point once a plane is detected and GPS is warmed
+        // Option: Auto-add first anchor point on startMeasurement. Disabled
         if (arFragment != null && arFragment.getArSceneView() != null && arFragment.getArSceneView().getScene() != null) {
             arFragment.getArSceneView().getScene().addOnUpdateListener(frameTime -> {
                 if (!autoAddFirstPoint || attemptedAutoFirstAdd) return;
@@ -231,7 +230,7 @@ public class ARMeasureActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        // Let ArFragment handle its own lifecycle - nothing to do here
+        // nothing to do here
         if (sensorManager != null) {
             sensorManager.unregisterListener(sensorListener);
         }
@@ -246,11 +245,9 @@ public class ARMeasureActivity extends AppCompatActivity {
             if (event.sensor.getType() != Sensor.TYPE_ROTATION_VECTOR) return;
             try {
                 SensorManager.getRotationMatrixFromVector(rotationMatrix, event.values);
-                // Remap so that the axes are aligned to the device natural orientation
                 float[] remapped = new float[9];
                 SensorManager.remapCoordinateSystem(rotationMatrix, SensorManager.AXIS_X, SensorManager.AXIS_Z, remapped);
                 SensorManager.getOrientation(remapped, orientation);
-                // Azimuth is orientation[0] in radians, relative to magnetic north
                 lastAzimuthRad = orientation[0];
             } catch (Exception ignore) {}
         }
@@ -281,7 +278,7 @@ public class ARMeasureActivity extends AppCompatActivity {
      * This is the standard ARCore initialization process
      */
     private void proceedArCoreFlow() {
-        // 1) Check ARCore support/installation status
+        // Check ARCore support/installation status
         Availability availability = ArCoreApk.getInstance().checkAvailability(this);
         Log.d(TAG, "ARCore availability: " + availability);
 
@@ -613,9 +610,6 @@ public class ARMeasureActivity extends AppCompatActivity {
 
         if (tvPerimeter != null) tvPerimeter.setText(String.format(java.util.Locale.US, "Perimeter: %.2f m", perim));
         if (tvArea != null) tvArea.setText(String.format(java.util.Locale.US, "Area: %.2f m²", area));
-
-        // Note: For ARCore point noise, alternatives include triangulation or convex-hull + triangulation.
-        // Shoelace is kept here for simplicity and good performance on ordered polygon taps.
     }
 }
 
