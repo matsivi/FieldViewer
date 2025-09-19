@@ -52,7 +52,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
     private Marker rotationHandleMarker;  // Blue handle for rotating polygon
     private java.util.List<LatLng> rotateStartLatLngs;  // Original positions before rotation
     private double rotateStartAngleRad;  // Starting angle for rotation
-    private double rotationHandleRadiusMeters = 10.0; // Default 10 m radius for rotation handle
+    private double rotationHandleRadiusMeters = 10.0; // Default 10 m radius for rotation handle, not precise
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +204,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
             }
         }
 
-        // Add a draggable centroid handle to move the entire polygon
+        // Add a draggable centroid handle to move the entire polygon, sometimes bugs out and moves out of the polygon
         LatLng centroid = computeCentroid(latLngs);
         polygonHandleMarker = googleMap.addMarker(new MarkerOptions()
                 .position(centroid)
@@ -214,7 +214,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
                 .title("Drag shape"));
         if (polygonHandleMarker != null) polygonHandleMarker.setTag("handle");
 
-        // Add a rotation handle offset from centroid (east by ~10 m)
+        // Add a rotation handle offset from centroid 
         LatLng rotPos = offsetByMeters(centroid, rotationHandleRadiusMeters, 0.0);
         rotationHandleMarker = googleMap.addMarker(new MarkerOptions()
                 .position(rotPos)
@@ -396,7 +396,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     /**
-     * Updates the position of the orange center handle to match polygon centroid
+     * Updates the position of the orange center handle to match polygon centroi
      * Also updates rotation handle position
      */
     private void updateHandlePosition() {
@@ -417,7 +417,6 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
 
     /**
      * Flips the polygon across either East/West or North/South axis
-     * @param eastWest true to flip horizontally, false to flip vertically
      */
     private void flipPolygon(boolean eastWest) {
         if (latLngs == null || latLngs.isEmpty()) return;
@@ -459,7 +458,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
                 LatLng p = latLngs.get(i);
                 sb.append(p.longitude).append(',').append(p.latitude).append(',').append("0\n");
             }
-            // Close the ring
+
             LatLng first = latLngs.get(0);
             sb.append(first.longitude).append(',').append(first.latitude).append(',').append("0\n");
             sb.append("      </coordinates></LinearRing></outerBoundaryIs></Polygon>\n");
@@ -484,10 +483,9 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
             android.content.Intent intent = new android.content.Intent(android.content.Intent.ACTION_VIEW);
             intent.setDataAndType(uri, "application/vnd.google-earth.kml+xml");
             intent.addFlags(android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION);
-            // Prefer Google Maps/Earth if available
             startActivity(android.content.Intent.createChooser(intent, "Open polygon in"));
         } catch (Exception e) {
-            android.widget.Toast.makeText(this, "Unable to open in Maps", android.widget.Toast.LENGTH_SHORT).show();
+            android.widget.Toast.makeText(this, "Unable to open in Earth", android.widget.Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -542,7 +540,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
             org.json.JSONObject root = new org.json.JSONObject();
             root.put("name", safe != null ? safe : "FieldViewer Measurement");
             root.put("timestamp", nowMs);
-            // Add human readable timestamp variants for clarity
+            // Add readable timestamp variants for clarity
             String iso = new java.text.SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", java.util.Locale.US)
                     .format(new java.util.Date(nowMs));
             String localPretty = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm", java.util.Locale.getDefault())
@@ -623,7 +621,7 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
     }
 
     /**
-     * Opens polygon in Google Earth with fallback options
+     * Opens polygon in Google Earth with planned fallback options
      * Tries Google Earth first, then Maps, then generic KML viewer
      */
     private void openInGoogleEarthOrFallback() {
@@ -761,8 +759,6 @@ public class ResultActivity extends AppCompatActivity implements OnMapReadyCallb
         num += 63;
         result.append((char) (num));
     }
-
-    // --- Helpers for local meters conversion and rotation ---
     
     /**
      * Converts lat/lng to local East/North meters relative to origin
